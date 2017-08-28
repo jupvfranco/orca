@@ -75,41 +75,71 @@ Given the size of the Pony run-time (about 13 KLOC), for the researcher wanting 
 
 **Step by Step Instructions for Running Benchmarks**
 
-We now go over the step-by-step instructions for how to evaluate the artefact. Note that in case the machine being used is not a the Bulldozer machine described in the paper, the results will in all likelihood be different from those in our paper. 
+We now go over the step-by-step instructions for how to evaluate the
+artefact. Note that in case the machine being used is not the
+Bulldozer machine described in the paper, the results will in all
+likelihood be different from those in our paper.
 
-We provide scripts to run five different tests, which we now describe. For each step, we provide a command that runs a test corresponding to a part of the evaluation. The parameters to that command can be tweaked. We also provide an example command that should give expected results in a reasonable amount of time. These steps can be carried out in any order.
+We provide scripts to run five different tests, which we now
+describe. For each step, we provide a command that runs a test
+corresponding to a part of the evaluation. The parameters to that
+command can be tweaked. We also provide an example command that should
+give expected results in a reasonable amount of time. These steps can
+be carried out in any order.
 
-These benchmarks can be used by someone interested in ORCA (especially in its Pony implementation) to understand its performance, and especially possible pathologies, by running Pony programs that stress ORCA in various ways. As starting points, we provide the benchmarks from the paper, plus the necessary infrastructure to run these with different input and compare the output. 
+These benchmarks can be used by someone interested in ORCA (especially
+in its Pony implementation) to understand its performance, and
+especially possible pathologies, by running Pony programs that stress
+ORCA in various ways. As starting points, we provide the benchmarks
+from the paper, plus the necessary infrastructure to run these with
+different input and compare the output.
 
-All the output files can be found in the same directory of the Pony source code for the benchmark executed.
+All the output files can be found in the same directory of the Pony
+source code for the benchmark executed.
 
-STEP 1: Scalability: used to evaluate scalability, such as described in Section 6.2 of the paper. 
-Command: 
-bash run/run-scalability.sh <pony_release> <benchmark_name> <input> <max_cores>
-Examples: 
-bash run/run-scalability.sh release-telemetry trees 10 64
+***STEP 1 -- Scalability***
+Used to evaluate scalability, such as described in Section 6.2 of the paper. 
+* Command: 
+```bash run/run-scalability.sh <pony_release> <benchmark_name> <input> <max_cores>```
+* Examples: 
+```bash run/run-scalability.sh release-telemetry trees 10 64
 bash run/run-scalability.sh release-nogc trees 10 64
-bash run/run-scalability.sh release trees 10 64
-     …  and similarly for trees2, heavyRing, rings, etc ...
-Parsing and reading the output: 
-The file benchmarks/<bechmark_name>/pony/orca.scalability.<pony_release>.txt contains the output produced by the benchmark itself. 
-The file benchmarks/<benchmark_name>/pony/orca.scalability.<pony_release>.log contains a sequence of lines of the form <number of cores used,iteration id, wall-clock time for benchmark execution>. 
-Understanding the output: 
-For this benchmark, the output is run-time measured in wall-clock time. As is visible in Figure 16, when running non-virtualized on a big machine, the run-time of the program decreases as the number of cores increase. This is a strong scalability benchmark, meaning input size does not vary.
+bash run/run-scalability.sh release trees 10 64```
+... and similarly for `trees2`, `heavyRing`, `rings`, etc ...
+*Parsing and reading the output: 
+**The file `benchmarks/<bechmark_name>/pony/orca.scalability.<pony_release>.txt` contains the output produced by the benchmark itself. 
+**The file `benchmarks/<benchmark_name>/pony/orca.scalability.<pony_release>.log` contains a sequence of lines of the form <number of cores used,iteration id, wall-clock time for benchmark execution. 
+**Understanding the output: 
+For this benchmark, the output is run-time measured in wall-clock
+time. As is visible in Figure 16, when running non-virtualized on a
+big machine, the run-time of the program decreases as the number of
+cores increase. This is a strong scalability benchmark, meaning input
+size does not vary.
 
-STEP 2: Responsiveness: used to measure responsiveness, as explained in Section 6.3. of the paper. All the other tests run any given benchmark. This one only runs the serverSimulation benchmark, which is a benchmark designed to test responsiveness. 
-Command: 
-bash run/run-responsiveness.sh <pony_release> <input> 
-Example: 
-bash run/run-responsiveness.sh release-telemetry “20 200 5 5”
+***STEP 2 -- Responsiveness***
+Used to measure responsiveness, as explained in Section 6.3. of the
+paper. All the other tests run any given benchmark. This one only runs
+the serverSimulation benchmark, which is a benchmark designed to test
+responsiveness.
+
+* Command: 
+```bash run/run-responsiveness.sh <pony_release> <input> ```
+* Example: 
+```bash run/run-responsiveness.sh release-telemetry “20 200 5 5”
 bash run/run-responsiveness.sh release-nogc “20 200 5 5”
-bash run/run-responsiveness.sh release “20 200 5 5”
+bash run/run-responsiveness.sh release “20 200 5 5”```
 Do not forget to put the argument in quotation marks
-Parsing and reading the output: 
-The file benchmarks/serverSimulation/pony/orca.responsiveness.<pony_release>.log contains the differences between response times, as reported by running the benchmark. 
-Understanding the output:
-This benchmark measures differences in processing times for requests to a server. The jitter should be minimal as there are no global GC events. Compare with Figure 20 in the paper. 
-Note: the script is not prepared to run this rest with release-telemetry.
+
+* Parsing and reading the output: 
+** The file `benchmarks/serverSimulation/pony/orca.responsiveness.<pony_release>.log` contains the differences between response times, as reported by running the benchmark. 
+*Understanding the output:
+
+This benchmark measures differences in processing times for requests
+to a server. The jitter should be minimal as there are no global GC
+events. Compare with Figure 20 in the paper.
+
+Note: the script is not
+prepared to run this test with release-telemetry.
 
 STEP 3: Overhead: used to measure overhead in terms of time spent on scanning upon message sending and receiving and additional runtime messages due to ORCA. It also reports the number of GC cycles and the number of application messages received, such as described in Section 6.5. All the other tests run with any given release. This one runs only with release-telemetry, which is the only one that outputs all the information needed.
 Command: 
