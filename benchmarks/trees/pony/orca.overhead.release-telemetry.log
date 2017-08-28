@@ -1,0 +1,11 @@
+Iteration 1
+Number of GC cycles: 
+Number of actors: 
+Number of application messages: 
+Number of INC messages: 
+Number of DEC messages: 
+CPU cycles @ behaviour: 
+CPU cycles @ GC: 
+CPU cycles @ sending trace: 
+CPU cycles @ receiving trace: 
+
