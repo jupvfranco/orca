@@ -108,10 +108,10 @@ bash run/run-scalability.sh release trees 10 64
 ```
 ... and similarly for `trees2`, `heavyRing`, `rings`, etc ...
 
-*Parsing and reading the output: 
+* Parsing and reading the output: 
 - The file `benchmarks/<bechmark_name>/pony/orca.scalability.<pony_release>.txt` contains the output produced by the benchmark itself. 
 - The file `benchmarks/<benchmark_name>/pony/orca.scalability.<pony_release>.log` contains a sequence of lines of the form <number of cores used,iteration id, wall-clock time for benchmark execution. 
-*Understanding the output: 
+* Understanding the output: 
 For this benchmark, the output is run-time measured in wall-clock
 time. As is visible in Figure 16, when running non-virtualized on a
 big machine, the run-time of the program decreases as the number of
@@ -125,8 +125,7 @@ the serverSimulation benchmark, which is a benchmark designed to test
 responsiveness.
 
 * Command: 
-```bash run/run-responsiveness.sh <pony_release> <input> 
-```
+```bash run/run-responsiveness.sh <pony_release> <input> ```
 * Example: 
 ```bash run/run-responsiveness.sh release-telemetry “20 200 5 5”
 bash run/run-responsiveness.sh release-nogc “20 200 5 5”
@@ -147,11 +146,9 @@ Note: the script is not prepared to run this test with `release-telemetry`.
 Used to measure overhead in terms of time spent on scanning upon message sending and receiving and additional runtime messages due to ORCA. It also reports the number of GC cycles and the number of application messages received, such as described in Section 6.5. All the other tests run with any given release. This one runs only with release-telemetry, which is the only one that outputs all the information needed.
 
 * Command: 
-```bash run/run-overhead.sh <benchmark_name> <input> 
-```
+```bash run/run-overhead.sh <benchmark_name> <input> ```
 * Example: 
-```bash run/run-overhead.sh trees 10
-```
+```bash run/run-overhead.sh trees 10```
 *Parsing, reading and understanding the output: 
 - The file `benchmarks/<benchmark_name>/pony/orca.overhead.release-telemetry.log` contains several blocks of text containing the following information per single execution: iteration id, number of garbage collection cycles, number of actors spawned, number of application messages, number of increment messages, number of decrement messages, number of CPU cycles spent on behaviour execution, number of CPU cycles spent on garbage collection, number of CPU cycles spent on tracing up message sending, number of CPU cycles spent on tracing up message receiving and finally the total number of CPU cycles spent by the benchmark. 
 
@@ -159,8 +156,7 @@ Used to measure overhead in terms of time spent on scanning upon message sending
 Used to evaluate memory footprint, such as described in Section 6.6 of the paper. 
 
 * Command: 
-```bash run/run-footprint.sh <pony_release> <benchmark_name><input>
-```
+```bash run/run-footprint.sh <pony_release> <benchmark_name><input>```
 * Example: 
 ```bash run/run-footprint.sh release-telemetry trees 10
 bash run/run-footprint.sh release-nogc trees 10
@@ -172,11 +168,9 @@ Reading, parsing and understanding the output:
 
 ***STEP 5 -- CPU usage test***
 * Command: 
-``` bash run/run-cpu-usage.sh <benchmark_name> <input> <cores>
-```
+``` bash run/run-cpu-usage.sh <benchmark_name> <input> <cores>```
 * Example: 
-``` bash run/run-overhead.sh trees 10
-```
+``` bash run/run-overhead.sh trees 10```
 * Reading, parsing and understanding the output: 
 _ The file benchmarks/<benchmark_name>/pony/orca.cpuusage.release-telemetry.log contains information about starting and finishing of garbage collection cycles, tracing upon sending and tracing upon receiving, and behaviour executions. It also contains the total number of CPU cycles used by the benchmark execution.
 This information is used in Figure 21 to understand the overhead of scanning on message sends -- a possible pain point for ORCA. Thus, the important numbers here is the number of INC and DEC messages (as they could theoretically flood the normal message channels), and time spent in GC, tracing on send and receive in relation to time spent in behaviour (i.e., the application logic). The information is in terms of intervals: `(starting time in CPU cycles --- finishing time in CPU cycles)`. Note that there is a bug in the output of “programs execution used X CPU cycles”. We are working to fix this bug. We have been unable to reproduce this bug outside of the VM. Ultimately, we felt that the simplicity of a VM-based distribution outweighed the importance of this one metric. 
