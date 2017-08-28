@@ -2,20 +2,20 @@
 This repository contains the benchmarks written in Pony, Akka and
 Erlang, which were used in the paper:
 
- * Orca: GC and Type System Co-Design for Actor Languages *
+ * Orca: GC and Type System Co-Design for Actor Languages
 
 accepted at OOPSLA'17. 
 
 
-*** Installation Instructions: ***
+***Installation Instructions:***
 
-* Clone this repository
+1. Clone this repository
 ```
 git clone git@github.com:jupvfranco/orca.git
 cd orca
 ```
 
-* Install Pony inside the `orca` directory
+2. Install Pony inside the `orca` directory
 TODO ```https://github.com/jupvfranco/ponyc. ```
 
 A more recent version of Pony and instructions for installation can be
@@ -28,47 +28,58 @@ should show three directories:
 * `benchmarks`: containing the benchmarks code; and
 * `run`: containing scripts to run different tests. 
 
-*** The Pony compiler (ponyc):*** In this directory, you can find the pony sources, built in three different modes:
-release, which can be used to run a benchmark without telemetry overhead
-release-telemetry, which can be used to run a benchmark and to print telemetry information
-release-nogc, which can be used to run a benchmark without garbage collection (it also ignores scanning upon message receiving and runtime messages related to garbage collection)
-Note: referred to as <pony_release> in the Step-by-Step Instructions.
+***The Pony compiler (ponyc):*** 
+In this directory, you can find the pony sources, built in three different modes:
+* `release`, which can be used to run a benchmark without telemetry overhead
+* `release-telemetry`, which can be used to run a benchmark and to print telemetry information
+* `release-nogc`, which can be used to run a benchmark without garbage collection (it also ignores scanning upon message receiving and runtime messages related to garbage collection)
 
-Benchmarks directory (benchmarks): In this directory, one can find the code for the benchmarks used in the Evaluation of ORCA. 
-trees <N>
-trees2 <N>  
-heavyRing <N> <M> <K>
-rings <N> <M> <K>
-mailbox  <N> <M>
-serverSimulation <N> <M> <K> <J>
+Note: referred to as `<pony_release>` in the Step-by-Step Instructions.
+
+***Benchmarks directory (benchmarks):***
+In this directory, one can find the code for the benchmarks used in the Evaluation of ORCA. 
+* trees <N>
+* trees2 <N>  
+* heavyRing <N> <M> <K>
+* rings <N> <M> <K>
+* mailbox  <N> <M>
+* serverSimulation <N> <M> <K> <J>
+
 The description of each benchmark can be found in Section 6.1 of the paper. 
-Although we focus on Pony and ORCA in this artifact, we also include the code used in Pony, Erlang and Akka, for comparison purposes only. 
-Note: referred to as <benchmark_name> in the Step-by-Step Instructions.
+Although we focus only on Pony and ORCA, we also include the code used in Pony, Erlang and Akka, for comparison purposes only. 
+Note: referred to as `<benchmark_name>` in the Step-by-Step Instructions.
 
 Each benchmark takes inputs with different formats, which we now describe:
-trees: takes the depth of trees created (a number <N>) -- the deeper the trees, the more garbage created (same for all benchmarks).
-trees2: takes the depth of trees created (a number <N>) .
-heavyRing: takes the number of actors in the ring, the depth of the tree being passed around and the number of rounds (three numbers, <N> <M> <K>) -- the higher number of rounds, the more scanning overhead on send and receive is induced which is a Pony pain point.
-rings: takes the number of actors in each ring, the number of rings created, and the number of messages sent in each ring (three numbers <N> <M> <K>).
-mailbox: takes the number of sending actors and the number of messages to pass among them (two numbers <N> <M>).
-serverSimulation: takes the number of servers (actors) spawned, the number of requests sent to each server, the minimal depth and the maximal depth of trees being created (four numbers <N> <M> <K> <J>). These last two arguments were the same when running benchmarks. 
+* `trees`: takes the depth of trees created (a number `<N>`) -- the deeper the trees, the more garbage created (same for all benchmarks).
+* `trees2`: takes the depth of trees created (a number `<N>`) .
+* `heavyRing`: takes the number of actors in the ring, the depth of the tree being passed around and the number of rounds (three numbers, `<N> <M> <K>`) -- the higher number of rounds, the more scanning overhead on send and receive is induced which is a Pony pain point.
+* `rings`: takes the number of actors in each ring, the number of rings created, and the number of messages sent in each ring (three numbers `<N> <M> <K>`).
+* `mailbox`: takes the number of sending actors and the number of messages to pass among them (two numbers `<N> <M>`).
+* `serverSimulation`: takes the number of servers (actors) spawned, the number of requests sent to each server, the minimal depth and the maximal depth of trees being created (four numbers `<N> <M> <K> <J>`). These last two arguments were the same when running benchmarks. 
+
 Note: when running one of the scripts described below, if running any benchmark that takes more than one argument (e.g. mailbox), it is required to pass the input with quotes (e.g. “10 100” for the mailbox). 
 
-Scripts directory (run): In this directory, one can find the bash scripts used to run Pony. We describe how to run these in the step-by-step instructions below. 
+***Scripts directory (run):*** 
+In this directory, one can find the bash scripts used to run Pony. We describe how to run these in the step-by-step instructions below. 
 
-Playing around: In order to modify our programs, or write your own, we refer to the Pony tutorial here https://tutorial.ponylang.org/. There are some small starting programs in Figures 2, 3 and 4 in the paper as starting points in addition to the benchmark programs. 
-Finding the ORCA-related files
-Given the size of the Pony run-time (about 13 KLOC), for the researcher wanting to study the full code of the implementation of ORCA, the following files are the key files related to ORCA. Inside ponyc folder:
-try_gc in src/libponyrt/actor/actor.c is the entry point for starting a GC cycle.
-handle_message in src/libponyrt/actor/actor.c shows how Orca related messages are processed.
-ponyint_gc_sendobject in ~/github/ponyc/src/libponyrt/gc/gc.c is for tracing on sending objects across actors; similar tracing code for receiving objects, sending & receiving actors, etc. can be found in the same file as well.
-src/libponyrt/mem/heap.[h|c] contain actor-local heap.
-Step by Step Instructions for Running Benchmarks
-We now go over the step-by-step instructions for how to evaluate the artefact. We note that since we are running in a VM, and on a different machine (the Bulldozer machine used in the paper is a NUMA machine with 64 cores, for comparison), the results will in all likelihood be different from those in our paper. 
+***Playing around:*** 
+In order to modify our programs, or write your own, we refer to the Pony tutorial here https://tutorial.ponylang.org/. There are some small starting programs in Figures 2, 3 and 4 in the paper as starting points in addition to the benchmark programs. 
 
-We provide scripts to run five different tests, which we now describe. For each step, we provide a command that runs a test corresponding to a part of the evaluation. The parameters to that command can be tweaked. We also provide an example command that should give expected results in a reasonable amount of time. (Note that the steps can be carried out in any order.)
+***Finding the ORCA-related files:***
+Given the size of the Pony run-time (about 13 KLOC), for the researcher wanting to study the full code of the implementation of ORCA, the following files are the key files related to ORCA. Inside `ponyc` folder:
+* `try_gc` in `src/libponyrt/actor/actor.c` is the entry point for starting a GC cycle.
+* `handle_message` in `src/libponyrt/actor/actor.c` shows how Orca related messages are processed.
+* `ponyint_gc_sendobject` in `src/libponyrt/gc/gc.c` is for tracing on sending objects across actors; similar tracing code for receiving objects, sending & receiving actors, etc. can be found in the same file as well.
+* `src/libponyrt/mem/heap.[h|c]` contain actor-local heap.
 
-These benchmarks can be used by someone interested in ORCA (esp. In its Pony implementation) to understand its performance, and especially possible pathologies, by running Pony programs that stress ORCA in various ways. As starting points, we provide the benchmarks from the paper, plus the necessary infrastructure to run these with different input and compare the output. 
+
+**Step by Step Instructions for Running Benchmarks**
+
+We now go over the step-by-step instructions for how to evaluate the artefact. Note that in case the machine being used is not a the Bulldozer machine described in the paper, the results will in all likelihood be different from those in our paper. 
+
+We provide scripts to run five different tests, which we now describe. For each step, we provide a command that runs a test corresponding to a part of the evaluation. The parameters to that command can be tweaked. We also provide an example command that should give expected results in a reasonable amount of time. These steps can be carried out in any order.
+
+These benchmarks can be used by someone interested in ORCA (especially in its Pony implementation) to understand its performance, and especially possible pathologies, by running Pony programs that stress ORCA in various ways. As starting points, we provide the benchmarks from the paper, plus the necessary infrastructure to run these with different input and compare the output. 
 
 All the output files can be found in the same directory of the Pony source code for the benchmark executed.
 
