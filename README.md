@@ -131,7 +131,7 @@ responsiveness.
 bash run/run-responsiveness.sh release-nogc “20 200 5 5”
 bash run/run-responsiveness.sh release “20 200 5 5” 
 ```
-Do not forget to put the argument in quotation marks
+Do not forget to put the argument in quotation marks.
 
 * Parsing and reading the output: 
 - The file `benchmarks/serverSimulation/pony/orca.responsiveness.<pony_release>.log` contains the differences between response times, as reported by running the benchmark. 
@@ -149,7 +149,7 @@ Used to measure overhead in terms of time spent on scanning upon message sending
 ```bash run/run-overhead.sh <benchmark_name> <input> ```
 * Example: 
 ```bash run/run-overhead.sh trees 10```
-*Parsing, reading and understanding the output: 
+* Parsing, reading and understanding the output: 
 - The file `benchmarks/<benchmark_name>/pony/orca.overhead.release-telemetry.log` contains several blocks of text containing the following information per single execution: iteration id, number of garbage collection cycles, number of actors spawned, number of application messages, number of increment messages, number of decrement messages, number of CPU cycles spent on behaviour execution, number of CPU cycles spent on garbage collection, number of CPU cycles spent on tracing up message sending, number of CPU cycles spent on tracing up message receiving and finally the total number of CPU cycles spent by the benchmark. 
 
 ***STEP 4 -- Footprint*** 
@@ -162,7 +162,7 @@ Used to evaluate memory footprint, such as described in Section 6.6 of the paper
 bash run/run-footprint.sh release-nogc trees 10
 bash run/run-footprint.sh release trees 10
 ```
-Reading, parsing and understanding the output: 
+* Reading, parsing and understanding the output: 
 - The file `benchmarks/<bechmark_name>/pony/orca.footprint.<pony_release>.txt` contains the output produced by the benchmark itself. 
 - The file `benchmarks/<benchmark_name>/pony/orca.footprint.<pony_release>.log` contains a sequence of lines containing iteration id and memory footprint in KB per execution. Compare with Figure 22 in the paper. 
 
