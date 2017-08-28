@@ -2,12 +2,12 @@
 This repository contains the benchmarks written in Pony, Akka and
 Erlang, which were used in the paper:
 
-  Orca: GC and Type System Co-Design for Actor Languages
+ * Orca: GC and Type System Co-Design for Actor Languages *
 
 accepted at OOPSLA'17. 
 
 
-Installation Instructions:
+*** Installation Instructions: ***
 
 * Clone this repository
 ```
@@ -28,7 +28,7 @@ should show three directories:
 * `benchmarks`: containing the benchmarks code; and
 * `run`: containing scripts to run different tests. 
 
-The Pony compiler (ponyc): In this directory, you can find the pony sources, built in three different modes:
+*** The Pony compiler (ponyc):*** In this directory, you can find the pony sources, built in three different modes:
 release, which can be used to run a benchmark without telemetry overhead
 release-telemetry, which can be used to run a benchmark and to print telemetry information
 release-nogc, which can be used to run a benchmark without garbage collection (it also ignores scanning upon message receiving and runtime messages related to garbage collection)
