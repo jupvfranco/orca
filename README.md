@@ -109,8 +109,8 @@ bash run/run-scalability.sh release trees 10 64
 ... and similarly for `trees2`, `heavyRing`, `rings`, etc ...
 
 * Parsing and reading the output: 
-- The file `benchmarks/<bechmark_name>/pony/orca.scalability.<pony_release>.txt` contains the output produced by the benchmark itself. 
-- The file `benchmarks/<benchmark_name>/pony/orca.scalability.<pony_release>.log` contains a sequence of lines of the form <number of cores used,iteration id, wall-clock time for benchmark execution. 
+  * The file `benchmarks/<bechmark_name>/pony/orca.scalability.<pony_release>.txt` contains the output produced by the benchmark itself. 
+  * The file `benchmarks/<benchmark_name>/pony/orca.scalability.<pony_release>.log` contains a sequence of lines of the form <number of cores used,iteration id, wall-clock time for benchmark execution. 
 * Understanding the output: 
 For this benchmark, the output is run-time measured in wall-clock
 time. As is visible in Figure 16, when running non-virtualized on a
@@ -134,7 +134,7 @@ bash run/run-responsiveness.sh release “20 200 5 5”
 Do not forget to put the argument in quotation marks.
 
 * Parsing and reading the output: 
-- The file `benchmarks/serverSimulation/pony/orca.responsiveness.<pony_release>.log` contains the differences between response times, as reported by running the benchmark. 
+  * The file `benchmarks/serverSimulation/pony/orca.responsiveness.<pony_release>.log` contains the differences between response times, as reported by running the benchmark. 
 * Understanding the output:
 This benchmark measures differences in processing times for requests
 to a server. The jitter should be minimal as there are no global GC
@@ -150,7 +150,7 @@ Used to measure overhead in terms of time spent on scanning upon message sending
 * Example: 
 ```bash run/run-overhead.sh trees 10```
 * Parsing, reading and understanding the output: 
-- The file `benchmarks/<benchmark_name>/pony/orca.overhead.release-telemetry.log` contains several blocks of text containing the following information per single execution: iteration id, number of garbage collection cycles, number of actors spawned, number of application messages, number of increment messages, number of decrement messages, number of CPU cycles spent on behaviour execution, number of CPU cycles spent on garbage collection, number of CPU cycles spent on tracing up message sending, number of CPU cycles spent on tracing up message receiving and finally the total number of CPU cycles spent by the benchmark. 
+  * The file `benchmarks/<benchmark_name>/pony/orca.overhead.release-telemetry.log` contains several blocks of text containing the following information per single execution: iteration id, number of garbage collection cycles, number of actors spawned, number of application messages, number of increment messages, number of decrement messages, number of CPU cycles spent on behaviour execution, number of CPU cycles spent on garbage collection, number of CPU cycles spent on tracing up message sending, number of CPU cycles spent on tracing up message receiving and finally the total number of CPU cycles spent by the benchmark. 
 
 ***STEP 4 -- Footprint*** 
 Used to evaluate memory footprint, such as described in Section 6.6 of the paper. 
@@ -163,8 +163,8 @@ bash run/run-footprint.sh release-nogc trees 10
 bash run/run-footprint.sh release trees 10
 ```
 * Reading, parsing and understanding the output: 
-- The file `benchmarks/<bechmark_name>/pony/orca.footprint.<pony_release>.txt` contains the output produced by the benchmark itself. 
-- The file `benchmarks/<benchmark_name>/pony/orca.footprint.<pony_release>.log` contains a sequence of lines containing iteration id and memory footprint in KB per execution. Compare with Figure 22 in the paper. 
+  * The file `benchmarks/<bechmark_name>/pony/orca.footprint.<pony_release>.txt` contains the output produced by the benchmark itself. 
+  * The file `benchmarks/<benchmark_name>/pony/orca.footprint.<pony_release>.log` contains a sequence of lines containing iteration id and memory footprint in KB per execution. Compare with Figure 22 in the paper. 
 
 ***STEP 5 -- CPU usage test***
 * Command: 
@@ -172,6 +172,6 @@ bash run/run-footprint.sh release trees 10
 * Example: 
 ``` bash run/run-overhead.sh trees 10```
 * Reading, parsing and understanding the output: 
-_ The file benchmarks/<benchmark_name>/pony/orca.cpuusage.release-telemetry.log contains information about starting and finishing of garbage collection cycles, tracing upon sending and tracing upon receiving, and behaviour executions. It also contains the total number of CPU cycles used by the benchmark execution.
+  * The file benchmarks/<benchmark_name>/pony/orca.cpuusage.release-telemetry.log contains information about starting and finishing of garbage collection cycles, tracing upon sending and tracing upon receiving, and behaviour executions. It also contains the total number of CPU cycles used by the benchmark execution.
 This information is used in Figure 21 to understand the overhead of scanning on message sends -- a possible pain point for ORCA. Thus, the important numbers here is the number of INC and DEC messages (as they could theoretically flood the normal message channels), and time spent in GC, tracing on send and receive in relation to time spent in behaviour (i.e., the application logic). The information is in terms of intervals: `(starting time in CPU cycles --- finishing time in CPU cycles)`. Note that there is a bug in the output of “programs execution used X CPU cycles”. We are working to fix this bug. We have been unable to reproduce this bug outside of the VM. Ultimately, we felt that the simplicity of a VM-based distribution outweighed the importance of this one metric. 
 
